@@ -1,12 +1,13 @@
 #include <iostream>
 #include <vector>
-#include <map>
 
 class Vertex {
     public: 
         int val; 
         std::vector<Vertex*> neighbours; 
         Vertex* next; 
+        bool wildcard;
+        std::vector<Vertex*> spans;
 
         Vertex(int val) : val(val), next(nullptr) {}
 };
