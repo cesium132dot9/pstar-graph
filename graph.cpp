@@ -1,6 +1,8 @@
 #include <iostream>
 #include <vector>
 
+class Edge;
+
 class Vertex {
     public: 
         std::vector<int> vals; 
