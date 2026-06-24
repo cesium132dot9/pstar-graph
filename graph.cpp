@@ -1,93 +1,43 @@
 #include <iostream>
 #include <vector>
-
-class Edge;
-
-class Vertex {
-    public: 
-        std::vector<int> vals; 
-        std::vector<Edge*> edges; 
-        Vertex* next; 
-
-        Vertex(std::vector<int> vals) : vals(vals), next(nullptr) {}
-};
+using namespace std;
 
 class Edge {
-    public: 
-        bool is_span; 
-        Vertex* prev; 
-        Vertex* next;
+public: 
+    bool is_span; 
+    vector<int> labels;
+    Edge* next; 
 
-    Edge(bool is_span, Vertex* prev, Vertex* next) : is_span(is_span), prev(prev), next(next) {}
+    Edge(bool is_span) : is_span(is_span), next(nullptr) {}
+
+    void addLabel(int label) {
+        labels.push_back(label); 
+    }
+};
+
+class Vertex {
+public: 
+    int val; 
+    Edge* edges; 
+
+    Vertex(int val) : val(val), edges(nullptr) {}
+
+    void addEdge(Edge* new_edge) {
+        Edge* curr = edges; 
+        while (curr->next != nullptr) {
+            curr = curr->next; 
+        }
+        curr->next = new_edge; 
+    }
 };
 
 class Graph {        
-    public: 
-        Vertex* head; 
+public: 
+    vector<Vertex*> nodes; 
 
-        Graph() : head(nullptr) {}
-
-        ~Graph() {
-            Vertex* current = head; 
-            while (current != nullptr) { 
-                Vertex* next = current->next; 
-                delete current; 
-                current = next; 
-            }
-        }
-
-        void add_vertex(std::vector<int> vals) {
-            Vertex* v = new Vertex(vals); 
-
-            if (head == nullptr) {
-                head = v; 
-                return; 
-            }
-            else {
-                Vertex* current = head; 
-                while (current != nullptr) {
-                    current = current->next; 
-                }
-                current->next = v; 
-            }
-        }
-
-        //TODO: rerewrite add_edge
-        // bool add_edge(int val1, int val2) {
-        //     Vertex* v1 = find_vertex(val1); 
-        //     Vertex* v2 = find_vertex(val2); 
-            
-        //     if (v1 != nullptr && v2 != nullptr) {
-        //         v1->neighbours.push_back(v2); 
-        //         v2->neighbours.push_back(v1); 
-        //         return true; 
-        //     }
-        //     return false; 
-        // }
-
-        //TODO: rewrite get_neighbours
-        // std::vector<int> get_neighbours(int val) {
-        //     std::vector<int> neighbour_val; 
-        //     Vertex* v = find_vertex(val); 
-        //     if (v!= nullptr) {
-        //         for (Vertex* neighbour : v->neighbours) {
-        //             neighbour_val.push_back(neighbour->val); 
-        //         }
-        //     }
-        //     return neighbour_val; 
-        // }
-
-    private: 
-        //TODO: rewrite find_vertex
-        // Vertex* find_vertex(int val) {
-        //     Vertex* current = head; 
-        //     while (current != nullptr) {
-        //         if (current->val == val) {
-        //             return current; 
-        //         }
-        //     }
-        //     return nullptr; 
-        // }
+    void addVertex(Vertex* vertex) {
+        nodes.push_back(vertex); 
+    }
 };
 
 int main() {
