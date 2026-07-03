@@ -28,6 +28,7 @@ void Graph::addVertex(Vertex* vertex) {
 }
 
 
+//TODO: test out in main
 int main() {
     return 0; 
 }
