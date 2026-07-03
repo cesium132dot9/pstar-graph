@@ -1,5 +1,8 @@
+#pragma once
+
 #include <vector>
 
+//TODO: destructors
 class Edge {
 public: 
     bool is_span; 
@@ -18,7 +21,7 @@ public:
     Edge* edges; 
 
     Vertex(int val); 
-    
+
     void addEdge(Edge* new_edge); 
 };
 
