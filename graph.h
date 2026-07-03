@@ -1,10 +1,30 @@
 #include <vector>
 
-//TODO: Fix header file
 class Edge {
+public: 
+    bool is_span; 
+    std::vector<int> labels; 
+    Edge* next; 
+    int dest; 
 
-}
+    Edge(bool is_span, int dest); 
 
-class Vertex; 
+    void addLabel(int label); 
+};
 
-class Graph; 
+class Vertex {
+public: 
+    int val; 
+    Edge* edges; 
+
+    Vertex(int val); 
+    
+    void addEdge(Edge* new_edge); 
+};
+
+class Graph {
+public: 
+    std::vector<Vertex*> nodes; 
+
+    void addVertex(Vertex* vertex); 
+};
