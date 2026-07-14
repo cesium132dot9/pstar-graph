@@ -1,6 +1,9 @@
 #pragma once
 
 #include <vector>
+#include <string>
+#include <sstream>
+#include <iostream>
 
 //TODO: destructors
 class Edge {
