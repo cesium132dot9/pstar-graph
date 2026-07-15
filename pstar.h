@@ -1,4 +1,21 @@
+#pragma once
+
+#include <vector>
+#include <string>
+
+class Graph; 
+
 struct Token {
-    int var; // 0 for #, -1 for $
+    int var; 
     bool is_wildcard; 
 };
+
+/**
+ * Splits the input string into a vector of Tokens
+ */
+std::vector<Token> stringToToken(std::string input, char delim); 
+
+/**
+ * Build the main path of the p-graph with no spans
+ */
+void buildPath(Graph& g, const std::vector<Token>& conj); 

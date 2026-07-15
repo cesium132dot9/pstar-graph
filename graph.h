@@ -9,7 +9,6 @@ class Edge {
 public: 
     bool is_span; 
     std::vector<int> labels; 
-    Edge* next; 
     int dest_id; 
 
     Edge(bool is_span, int dest_id); 

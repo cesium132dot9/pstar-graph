@@ -26,10 +26,7 @@ Token stringToToken(std::string variable) {
     return token; 
 }
 
-/**
- * Splits the input string into a vector of Tokens
- */
-std::vector<Token> stringToToken(std::string input, char delim) {
+std::vector<Token> splitString(std::string input, char delim) {
     std::vector<Token> conj; 
     std::stringstream ss(input); 
     std::string variable; 
@@ -41,9 +38,6 @@ std::vector<Token> stringToToken(std::string input, char delim) {
     return conj; 
 }
 
-/**
- * Build the main path of the p-graph with no spans
- */
 void buildPath(Graph& g, const std::vector<Token>& conj) {
     for (size_t i = 0; i < conj.size(); i++) {
         Token t = conj[i];
@@ -61,7 +55,7 @@ int main() {
     std::string d1 = "#.(c2,*).(c3,*).c1.c4.(c5,*).(c6,*).$";
 
     Graph* g = new Graph(); 
-    buildPath(*g, stringToToken(d1, '.')); 
-    
+    buildPath(*g, splitString(d1, '.')); 
+
     g->printEdges(std::cout); 
 }

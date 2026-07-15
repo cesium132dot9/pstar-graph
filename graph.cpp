@@ -1,6 +1,6 @@
 #include "graph.h"
 
-Edge::Edge(bool is_span, int dest_id) : is_span(is_span), next(nullptr), dest_id(dest_id) {}
+Edge::Edge(bool is_span, int dest_id) : is_span(is_span), dest_id(dest_id) {}
 
 void Edge::addLabel(int label) {
     labels.push_back(label); 
