@@ -1,31 +1,33 @@
 #include "graph.h"
 
-Edge::Edge(bool is_span, int dest) : is_span(is_span), next(nullptr), dest(dest) {}
+Edge::Edge(bool is_span, int dest_id) : is_span(is_span), next(nullptr), dest_id(dest_id) {}
 
 void Edge::addLabel(int label) {
     labels.push_back(label); 
 }
 
 
-Vertex::Vertex(int val) : val(val), edges(nullptr) {}
+Vertex::Vertex(int val, int id) : val(val), id(id) {}
 
 void Vertex::addEdge(Edge* new_edge) {
-    if (edges == nullptr) {
-        edges = new_edge; 
-        return; 
-    }
-
-    Edge* curr = edges; 
-    while (curr->next != nullptr) {
-        curr = curr->next; 
-    }
-    curr->next = new_edge; 
+    edges.push_back(new_edge); 
 }
 
 
 void Graph::addVertex(Vertex* vertex) {
     nodes.push_back(vertex); 
 }
+
+// void Graph::printEdges() {
+//     for (Vertex* v : nodes) {
+//         std::cout << v->val << " "; 
+//         for (Edge* e : v->edges) {
+//             std::cout << e->dest_id; 
+//             std::cout << " [" << (e->is_span ? "span" : "") << "]  "; 
+//             std::cout << 
+//         }
+//     }
+// }
 
 
 struct Token {
@@ -73,12 +75,34 @@ std::vector<Token> stringStringToToken(std::string input, char delim) {
     return conj; 
 }
 
+/**
+ * Build the main path of the p-graph with no spans
+ */
+Graph* buildPath(const std::vector<Token>& conj) {
+    Graph* g = new Graph(); 
+
+    for (int i = 0; i < conj.size(); i++) {
+        Token t = conj[i];
+        Vertex* v = new Vertex(t.var, i); 
+        g->addVertex(v);
+
+        if (i + 1 < conj.size()) {
+            Edge* e = new Edge(false, i+1); 
+            v->addEdge(e); 
+        }
+    }
+    return g; 
+}
+
 int main() {
     std::string d1 = "#.(c2,*).(c3,*).c1.c4.(c5,*).(c6,*).$";
 
-    std::vector<Token> conjunction; 
-    conjunction = stringStringToToken(d1, '.'); 
-    for (Token& t : conjunction) {
-        std::cout << t.var << (t.is_wildcard ? "*" : "") << "\n";
+    Graph* g = buildPath(stringStringToToken(d1, '.')); 
+
+    for (Vertex* v : g->nodes) {
+        std::cout << v->val << " "; 
+        for (Edge* e : v->edges) {
+            std::cout << g->nodes[e->dest_id]->val << "\n"; 
+        }
     }
 }

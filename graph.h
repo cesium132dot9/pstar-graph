@@ -5,15 +5,14 @@
 #include <sstream>
 #include <iostream>
 
-//TODO: destructors
 class Edge {
 public: 
     bool is_span; 
     std::vector<int> labels; 
     Edge* next; 
-    int dest; 
+    int dest_id; 
 
-    Edge(bool is_span, int dest); 
+    Edge(bool is_span, int dest_id); 
 
     void addLabel(int label); 
 };
@@ -21,9 +20,10 @@ public:
 class Vertex {
 public: 
     int val; 
-    Edge* edges; 
+    int id; 
+    std::vector<Edge*> edges; 
 
-    Vertex(int val); 
+    Vertex(int val, int id); 
 
     void addEdge(Edge* new_edge); 
 };
@@ -33,4 +33,5 @@ public:
     std::vector<Vertex*> nodes; 
 
     void addVertex(Vertex* vertex); 
+    void printEdges(); 
 };
