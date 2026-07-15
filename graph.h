@@ -33,5 +33,10 @@ public:
     std::vector<Vertex*> nodes; 
 
     void addVertex(Vertex* vertex); 
-    void printEdges(); 
+    void printEdges(std::ostream& os) const;  
+};
+
+struct Token {
+    int var; // 0 for #, -1 for $
+    bool is_wildcard; 
 };

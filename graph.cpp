@@ -6,34 +6,36 @@ void Edge::addLabel(int label) {
     labels.push_back(label); 
 }
 
-
 Vertex::Vertex(int val, int id) : val(val), id(id) {}
 
 void Vertex::addEdge(Edge* new_edge) {
     edges.push_back(new_edge); 
 }
 
-
 void Graph::addVertex(Vertex* vertex) {
     nodes.push_back(vertex); 
 }
 
-// void Graph::printEdges() {
-//     for (Vertex* v : nodes) {
-//         std::cout << v->val << " "; 
-//         for (Edge* e : v->edges) {
-//             std::cout << e->dest_id; 
-//             std::cout << " [" << (e->is_span ? "span" : "") << "]  "; 
-//             std::cout << 
-//         }
-//     }
-// }
+void Graph::printEdges(std::ostream& os) const {
+    os << "src -> Val Dest [is_span] [labels]\n"; 
+    for (Vertex* v : nodes) {
+        for (Edge* e : v->edges) {
+            os << v->val << " -> "; 
+            os << nodes[e->dest_id]->val << " "; 
+            os << e->dest_id; 
+            os << " [" << (e->is_span ? "span" : "") << "] "; 
 
-
-struct Token {
-    int var; // 0 for #, -1 for $
-    bool is_wildcard; 
-};
+            os << "["; 
+            for (size_t i = 0; i < e->labels.size(); i++) {
+                if (i > 0) {
+                    os << ", "; 
+                }
+                os << e->labels[i]; 
+            }
+            os << "]\n"; 
+        }
+    }
+}
 
 /**
  * Helper function for split which takes a string and returns it as a Token* object.
@@ -63,7 +65,7 @@ Token stringToToken(std::string variable) {
 /**
  * Splits the input string into a vector of Tokens
  */
-std::vector<Token> stringStringToToken(std::string input, char delim) {
+std::vector<Token> stringToToken(std::string input, char delim) {
     std::vector<Token> conj; 
     std::stringstream ss(input); 
     std::string variable; 
@@ -81,7 +83,7 @@ std::vector<Token> stringStringToToken(std::string input, char delim) {
 Graph* buildPath(const std::vector<Token>& conj) {
     Graph* g = new Graph(); 
 
-    for (int i = 0; i < conj.size(); i++) {
+    for (size_t i = 0; i < conj.size(); i++) {
         Token t = conj[i];
         Vertex* v = new Vertex(t.var, i); 
         g->addVertex(v);
@@ -97,12 +99,13 @@ Graph* buildPath(const std::vector<Token>& conj) {
 int main() {
     std::string d1 = "#.(c2,*).(c3,*).c1.c4.(c5,*).(c6,*).$";
 
-    Graph* g = buildPath(stringStringToToken(d1, '.')); 
+    Graph* g = buildPath(stringToToken(d1, '.')); 
 
-    for (Vertex* v : g->nodes) {
-        std::cout << v->val << " "; 
-        for (Edge* e : v->edges) {
-            std::cout << g->nodes[e->dest_id]->val << "\n"; 
-        }
-    }
+    // for (Vertex* v : g->nodes) {
+    //     std::cout << v->val << " "; 
+    //     for (Edge* e : v->edges) {
+    //         std::cout << g->nodes[e->dest_id]->val << "\n"; 
+    //     }
+    // }
+    g->printEdges(std::cout); 
 }
