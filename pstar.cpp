@@ -1,5 +1,4 @@
 #include "pstar.h"
-#include "graph.h"
 
 /**
  * Helper function for split which takes a string and returns it as a Token* object.
@@ -38,7 +37,7 @@ std::vector<Token> splitString(std::string input, char delim) {
     return conj; 
 }
 
-void buildPath(Graph& g, const std::vector<Token>& conj) {
+void buildP(Graph& g, const std::vector<Token>& conj) {
     for (size_t i = 0; i < conj.size(); i++) {
         Token t = conj[i];
         Vertex* v = new Vertex(t.var, i); 
@@ -48,14 +47,10 @@ void buildPath(Graph& g, const std::vector<Token>& conj) {
             Edge* e = new Edge(false, i+1); 
             v->addEdge(e); 
         }
+
+        if (t.is_wildcard) {
+            Edge* span = new Edge(true, i+1); 
+            g.nodes[i-1]->addEdge(span); 
+        }
     }
-}
-
-int main() {
-    std::string d1 = "#.(c2,*).(c3,*).c1.c4.(c5,*).(c6,*).$";
-
-    Graph* g = new Graph(); 
-    buildPath(*g, splitString(d1, '.')); 
-
-    g->printEdges(std::cout); 
 }

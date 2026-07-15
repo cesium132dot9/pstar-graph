@@ -2,6 +2,8 @@
 
 #include <vector>
 #include <string>
+#include <sstream>
+#include "graph.h"
 
 class Graph; 
 
@@ -13,9 +15,9 @@ struct Token {
 /**
  * Splits the input string into a vector of Tokens
  */
-std::vector<Token> stringToToken(std::string input, char delim); 
+std::vector<Token> splitString(std::string input, char delim); 
 
 /**
  * Build the main path of the p-graph with no spans
  */
-void buildPath(Graph& g, const std::vector<Token>& conj); 
+void buildP(Graph& g, const std::vector<Token>& conj); 
