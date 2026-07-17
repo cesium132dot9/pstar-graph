@@ -1,6 +1,6 @@
 #include "graph.h"
 
-Edge::Edge(bool is_span, int dest_id) : is_span(is_span), dest_id(dest_id) {}
+Edge::Edge(bool is_span, int src_id, int dest_id) : is_span(is_span), src_id(src_id), dest_id(dest_id) {}
 
 void Edge::addLabel(int label) {
     labels.push_back(label); 
@@ -16,11 +16,24 @@ void Graph::addVertex(Vertex* vertex) {
     nodes.push_back(vertex); 
 }
 
-void Graph::printEdges(std::ostream& os) const {
-    os << "src -> Val Dest [is_span] [labels]\n"; 
+std::vector<Edge*> Graph::getSpans() {
+    std::vector<Edge*> spans; 
+
     for (Vertex* v : nodes) {
         for (Edge* e : v->edges) {
-            os << v->val << " -> "; 
+            if (e->is_span) {
+                spans.push_back(e); 
+            }
+        }
+    }
+    return spans; 
+}
+
+void Graph::printEdges(std::ostream& os) const {
+    os << "src_val src_id -> dest_val dest_id [is_span] [labels]\n"; 
+    for (Vertex* v : nodes) {
+        for (Edge* e : v->edges) {
+            os << v->val << " " << v->id << " -> "; 
             os << nodes[e->dest_id]->val << " "; 
             os << e->dest_id; 
             os << " [" << (e->is_span ? "span" : "") << "] "; 

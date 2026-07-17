@@ -37,20 +37,36 @@ std::vector<Token> splitString(std::string input, char delim) {
     return conj; 
 }
 
-void buildP(Graph& g, const std::vector<Token>& conj) {
+void buildPGraph(Graph& g, const std::vector<Token>& conj) {
     for (size_t i = 0; i < conj.size(); i++) {
         Token t = conj[i];
         Vertex* v = new Vertex(t.var, i); 
         g.addVertex(v);
 
         if (i + 1 < conj.size()) {
-            Edge* e = new Edge(false, i+1); 
+            Edge* e = new Edge(false, i, i+1); 
             v->addEdge(e); 
         }
 
         if (t.is_wildcard) {
-            Edge* span = new Edge(true, i+1); 
+            Edge* span = new Edge(true, i-1, i+1); 
             g.nodes[i-1]->addEdge(span); 
         }
     }
 }
+
+// /**
+//  * Helper function to check if two spans overlap
+//  */
+// bool overlaps(std::pair<int, int> a, std::pair<int, int> b) {
+//     if (a.first <= b.first < a.second || b.first <= a.first < b.second) {
+//         return true; 
+//     }
+//     else {
+//         return false; 
+//     }
+// }
+
+// void computeClosure() {
+
+// }
