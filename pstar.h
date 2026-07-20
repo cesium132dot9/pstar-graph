@@ -19,7 +19,7 @@ struct Token {
 std::vector<Token> splitString(std::string input, char delim); 
 
 /**
- * Build the main path of the p-graph with no spans
+ * Build the p-graph
  */
 void buildPGraph(Graph& g, const std::vector<Token>& conj); 
 

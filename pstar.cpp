@@ -59,7 +59,7 @@ void buildPGraph(Graph& p, const std::vector<Token>& conj) {
  * Helper function to check if two spans overlap
  */
 bool overlaps(std::pair<int, int> a, std::pair<int, int> b) {
-    if (a.first <= b.first < a.second) {
+    if (((a.first <= b.first) && (b.first < a.second)) || ((b.first <= a.first) && (a.first < b.second))) {
         return true; 
     }
     else {
@@ -67,28 +67,38 @@ bool overlaps(std::pair<int, int> a, std::pair<int, int> b) {
     }
 }
 
+std::vector<std::pair<int, int>> spansToPairs(std::vector<Edge*> spans) {
+    std::vector<std::pair<int, int>> pairs; 
+
+    for (Edge* e : spans) {
+        pairs.push_back({e->src_id, e->dest_id}); 
+    }
+
+    return pairs; 
+}
+
 void computeClosure(Graph& p) {
-    std::vector<Edge*> spans = p.getSpans(); 
+    std::vector<std::pair<int, int>> pairs = spansToPairs(p.getSpans()); 
     bool changed = true; 
 
     while (changed) {
         changed = false; 
-        size_t num_spans = spans.size(); 
+        size_t num_spans = pairs.size(); 
 
-        for (int i = 0; i < num_spans - 1; i++) {
-            for (int j = i + 1; j < num_spans; j++) {
-                std::pair<int, int> a = {spans[i]->src_id, spans[i]->dest_id};
-                std::pair<int, int> b = {spans[j]->src_id, spans[j]->dest_id}; 
+        for (size_t i = 0; i < num_spans - 1; i++) {
+            for (size_t j = i + 1; j < num_spans; j++) {
+                std::pair<int, int> a = pairs[i]; 
+                std::pair<int, int> b = pairs[j]; 
                 
                 if (overlaps(a, b)) {
-                    Edge* closure = new Edge(true, std::min(a.first, b.first), std::max(a.second, b.second)); 
+                    std::pair<int, int> u = {std::min(a.first, b.first), std::max(a.second, b.second)}; 
 
-                    if ((std::find(spans.begin(), spans.end(), closure)) != spans.end()) {
+                    if ((std::find(pairs.begin(), pairs.end(), u)) != pairs.end()) {
                         continue; 
                     }
                     else {
-                        spans.push_back(closure); 
-                        changed = true; 
+                        Edge* closure = new Edge(true, u.first, u.second); 
+                        p.nodes[u.first]->addEdge(closure); 
                     }
                 }
             }
