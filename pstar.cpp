@@ -67,6 +67,9 @@ bool overlaps(std::pair<int, int> a, std::pair<int, int> b) {
     }
 }
 
+/**
+ * Helper function to transform a vector of spans to vector of pairs
+ */
 std::vector<std::pair<int, int>> spansToPairs(std::vector<Edge*> spans) {
     std::vector<std::pair<int, int>> pairs; 
 
@@ -97,6 +100,9 @@ void computeClosure(Graph& p) {
                         continue; 
                     }
                     else {
+                        pairs.push_back(u); 
+                        changed = true; 
+
                         Edge* closure = new Edge(true, u.first, u.second); 
                         p.nodes[u.first]->addEdge(closure); 
                     }
