@@ -37,11 +37,11 @@ std::vector<Token> splitString(std::string input, char delim) {
     return conj; 
 }
 
-void buildPGraph(Graph& p, const std::vector<Token>& conj) {
+void buildPGraph(Graph& g, const std::vector<Token>& conj) {
     for (size_t i = 0; i < conj.size(); i++) {
         Token t = conj[i];
         Vertex* v = new Vertex(t.var, i); 
-        p.addVertex(v);
+        g.addVertex(v);
 
         if (i + 1 < conj.size()) {
             Edge* e = new Edge(false, i, i+1); 
@@ -50,7 +50,7 @@ void buildPGraph(Graph& p, const std::vector<Token>& conj) {
 
         if (t.is_wildcard) {
             Edge* span = new Edge(true, i-1, i+1); 
-            p.nodes[i-1]->addEdge(span); 
+            g.nodes[i-1]->addEdge(span); 
         }
     }
 }
@@ -80,8 +80,8 @@ std::vector<std::pair<int, int>> spansToPairs(std::vector<Edge*> spans) {
     return pairs; 
 }
 
-void computeClosure(Graph& p) {
-    std::vector<std::pair<int, int>> pairs = spansToPairs(p.getSpans()); 
+void computeClosure(Graph& g) {
+    std::vector<std::pair<int, int>> pairs = spansToPairs(g.getSpans()); 
     bool changed = true; 
 
     while (changed) {
@@ -104,7 +104,7 @@ void computeClosure(Graph& p) {
                         changed = true; 
 
                         Edge* closure = new Edge(true, u.first, u.second); 
-                        p.nodes[u.first]->addEdge(closure); 
+                        g.nodes[u.first]->addEdge(closure); 
                     }
                 }
             }
