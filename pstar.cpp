@@ -37,11 +37,11 @@ std::vector<Token> splitString(std::string input, char delim) {
     return conj; 
 }
 
-void buildPGraph(Graph& g, const std::vector<Token>& conj) {
+void buildPGraph(Graph& p, const std::vector<Token>& conj) {
     for (size_t i = 0; i < conj.size(); i++) {
         Token t = conj[i];
         Vertex* v = new Vertex(t.var, i); 
-        g.addVertex(v);
+        p.addVertex(v);
 
         if (i + 1 < conj.size()) {
             Edge* e = new Edge(false, i, i+1); 
@@ -50,23 +50,48 @@ void buildPGraph(Graph& g, const std::vector<Token>& conj) {
 
         if (t.is_wildcard) {
             Edge* span = new Edge(true, i-1, i+1); 
-            g.nodes[i-1]->addEdge(span); 
+            p.nodes[i-1]->addEdge(span); 
         }
     }
 }
 
-// /**
-//  * Helper function to check if two spans overlap
-//  */
-// bool overlaps(std::pair<int, int> a, std::pair<int, int> b) {
-//     if (a.first <= b.first < a.second || b.first <= a.first < b.second) {
-//         return true; 
-//     }
-//     else {
-//         return false; 
-//     }
-// }
+/**
+ * Helper function to check if two spans overlap
+ */
+bool overlaps(std::pair<int, int> a, std::pair<int, int> b) {
+    if (a.first <= b.first < a.second) {
+        return true; 
+    }
+    else {
+        return false; 
+    }
+}
 
-// void computeClosure() {
+void computeClosure(Graph& p) {
+    std::vector<Edge*> spans = p.getSpans(); 
+    bool changed = true; 
 
-// }
+    while (changed) {
+        changed = false; 
+        size_t num_spans = spans.size(); 
+
+        for (int i = 0; i < num_spans - 1; i++) {
+            for (int j = i + 1; j < num_spans; j++) {
+                std::pair<int, int> a = {spans[i]->src_id, spans[i]->dest_id};
+                std::pair<int, int> b = {spans[j]->src_id, spans[j]->dest_id}; 
+                
+                if (overlaps(a, b)) {
+                    Edge* closure = new Edge(true, std::min(a.first, b.first), std::max(a.second, b.second)); 
+
+                    if ((std::find(spans.begin(), spans.end(), closure)) != spans.end()) {
+                        continue; 
+                    }
+                    else {
+                        spans.push_back(closure); 
+                        changed = true; 
+                    }
+                }
+            }
+        }
+    }
+}
