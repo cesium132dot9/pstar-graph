@@ -11,11 +11,8 @@ int main() {
 
     Graph* g = new Graph(); 
 
-    std::cout << "p-graph: \n"; 
-    buildPGraph(*g, splitString(d2, '.')); 
-    g->printEdges(std::cout); 
-
-    std::cout << "p*-graph: \n"; 
+    buildPGraph(*g, splitString(d6)); 
     computeClosure(*g); 
+
     g->printEdges(std::cout); 
 }

@@ -25,12 +25,12 @@ Token stringToToken(std::string variable) {
     return token; 
 }
 
-std::vector<Token> splitString(std::string input, char delim) {
+std::vector<Token> splitString(std::string input) {
     std::vector<Token> conj; 
     std::stringstream ss(input); 
     std::string variable; 
 
-    while (std::getline(ss, variable, delim)) {
+    while (std::getline(ss, variable, '.')) {
         conj.push_back(stringToToken(variable)); 
     }
 

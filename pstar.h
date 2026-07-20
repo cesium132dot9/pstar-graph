@@ -16,7 +16,7 @@ struct Token {
 /**
  * Splits the input string into a vector of Tokens
  */
-std::vector<Token> splitString(std::string input, char delim); 
+std::vector<Token> splitString(std::string input); 
 
 /**
  * Build the p-graph
