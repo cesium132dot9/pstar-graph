@@ -1,2 +1,7 @@
 .vscode
 .DS_Store
+*.o
+*.exe
+main
+test
+*.dot

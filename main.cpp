@@ -1,18 +1,33 @@
+#include <string>
+#include <vector>
 #include "pstar.h"
 #include "graph.h"
+#include "trie.h"
 
-int main() {
-    std::string d1 = "#.(c2,*).(c3,*).c1.c4.(c5,*).(c6,*).$";
-    std::string d2 = "#.c2.c3.(c1,*).(c5,*).(c6,*).$";
-    std::string d3 = "#.c2.(c3,*).(c1,*).(c4,*).c5.(c6,*).$"; 
-    std::string d4 = "#.(c2,*).(c1,*).(c4,*).(c6,*).$"; 
-    std::string d5 = "#.(c2,*).c3.(c1,*).(c4,*).(c5,*).c6.$"; 
-    std::string d6 = "#.(c2,*).(c3,*).(c4,*).(c5,*).$"; 
+int main(int argc, char* argv[]) {
+    // the sorted variable sequences of Table I
+    std::vector<std::string> formula = {
+        "#.(c2,*).(c3,*).c1.c4.(c5,*).(c6,*).$",
+        "#.c2.c3.(c1,*).(c5,*).(c6,*).$",
+        "#.c2.(c3,*).(c1,*).(c4,*).c5.(c6,*).$",
+        "#.(c2,*).(c1,*).(c4,*).(c6,*).$",
+        "#.(c2,*).c3.(c1,*).(c4,*).(c5,*).c6.$",
+        "#.(c2,*).(c3,*).(c4,*).(c5,*).$"
+    };
 
-    Graph* g = new Graph(); 
+    std::vector<std::vector<Token>> conjunctions;
 
-    buildPGraph(*g, splitString(d6)); 
-    computeClosure(*g); 
+    for (const std::string& d : formula) {
+        conjunctions.push_back(splitString(d));
+    }
 
-    g->printEdges(std::cout); 
+    Graph g;
+    buildTrieGraph(g, conjunctions);
+
+    if (argc > 1 && std::string(argv[1]) == "--dot") {
+        g.printDot(std::cout);
+    }
+    else {
+        g.printTrie(std::cout);
+    }
 }

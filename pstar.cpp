@@ -88,7 +88,7 @@ void computeClosure(Graph& g) {
         changed = false; 
         size_t num_spans = pairs.size(); 
 
-        for (size_t i = 0; i < num_spans - 1; i++) {
+        for (size_t i = 0; i + 1 < num_spans; i++) {
             for (size_t j = i + 1; j < num_spans; j++) {
                 std::pair<int, int> a = pairs[i]; 
                 std::pair<int, int> b = pairs[j]; 
