@@ -153,16 +153,6 @@ label spans `v2 => v5` and `v3 => v5` with `{5}`. D3 has the overlapping spans
 (2, 4) and (3, 5), so by the closure in Definition 2 it also has (2, 5), and the
 correct label is `{3, 5}`. The tests follow the definition.
 
-## Next steps
-
-1. Compute reachable subsets through spans (RSs) for each branching node.
-2. Derive upBounds from them.
-3. Build the trie-like subgraphs over each upBound and implement the recursive
-   `SEARCH`, including the `merge` of results and the hash table that skips
-   repeated subgraphs.
-4. Add the CNF → DNF transformation and frequency-based sorting so the program
-   can take a 2-MAXSAT formula directly.
-
 ## Reference
 
 Y. Chen, *An Efficient Algorithm for Solving the 2-MAXSAT Problem*. Extended
