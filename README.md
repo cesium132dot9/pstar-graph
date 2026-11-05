@@ -27,20 +27,6 @@ false). Finally, the main paths of all p\*-graphs are merged into a trie, and
 their spans are lifted onto it. Every edge records which conjunctions it belongs
 to.
 
-## Status
-
-| Step | State |
-|---|---|
-| Parse a sorted variable sequence into tokens | done |
-| Build a p-graph (main path + spans) | done |
-| Transitive closure of spans (p\*-graph) | done |
-| Trie over main paths, with conjunction labels on tree edges | done |
-| Lift every S\* onto the trie, merging shared spans | done |
-| Leaf conjunction sets, (pre, post) encoding, ancestor test, branching nodes | done |
-| Text and Graphviz output | done |
-| CNF → DNF transformation and frequency-based variable ordering | not yet (input is given pre-sorted) |
-| `SEARCH`: reachable subsets, upBounds, recursive trie-like subgraphs | not yet |
-
 ## Building and running
 
 Requires `g++` with C++20 support and `make`.
